@@ -3,6 +3,7 @@ module de.dummyapt.sandboxfx {
     requires javafx.fxml;
 
 
-    opens de.dummyapt.sandboxfx to javafx.fxml;
-    exports de.dummyapt.sandboxfx;
+    exports de.dummyapt.sandbox;
+    exports de.dummyapt.sandbox.mytableview;
+    exports de.dummyapt.sandbox.nextpage;
 }
