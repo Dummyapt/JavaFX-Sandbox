@@ -19,7 +19,7 @@ public class TableViewExample extends Application {
 
     @Override
     public void start(Stage stage) {
-        addStatesToList();
+        addStates();
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
@@ -33,7 +33,7 @@ public class TableViewExample extends Application {
         stage.show();
     }
 
-    private void addStatesToList() {
+    private void addStates() {
         states.add(new State("Baden-Württemberg", 165.7));
         states.add(new State("Bayern", 228.4));
         states.add(new State("Berlin", 157.4));
