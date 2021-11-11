@@ -6,4 +6,5 @@ module de.dummyapt.sandboxfx {
     exports de.dummyapt.sandbox;
     exports de.dummyapt.sandbox.mytableview;
     exports de.dummyapt.sandbox.nextpage;
+    exports de.dummyapt.sandbox.calculator;
 }
