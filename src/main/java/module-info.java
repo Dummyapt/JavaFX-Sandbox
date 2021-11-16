@@ -1,10 +1,10 @@
 module de.dummyapt.sandboxfx {
     requires javafx.controls;
-    requires javafx.fxml;
+    requires java.sql;
 
 
     exports de.dummyapt.sandbox;
-    exports de.dummyapt.sandbox.mytableview;
-    exports de.dummyapt.sandbox.nextpage;
+    exports de.dummyapt.sandbox.pages;
     exports de.dummyapt.sandbox.calculator;
+    exports de.dummyapt.sandbox.covidtable;
 }

@@ -1,7 +1,7 @@
-package de.dummyapt.sandbox.mytableview;
+package de.dummyapt.sandbox.covidtable;
 
 @SuppressWarnings("unused")
-public record State(String name, double value) {
+public record Entry(String name, double value) {
     public String getName() {
         return name;
     }

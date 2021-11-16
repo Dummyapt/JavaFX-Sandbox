@@ -1,4 +1,4 @@
-package de.dummyapt.sandbox.nextpage;
+package de.dummyapt.sandbox.pages;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class NextPage extends Application {
+public class Pages extends Application {
 
     @Override
     public void start(Stage stage) {
@@ -21,12 +21,12 @@ public class NextPage extends Application {
 
         var vBox = new VBox();
         var secondLabel = new Label("Second view!");
-        var second = new Button("To the thirdButton view!");
-        vBox.getChildren().addAll(second, secondLabel);
+        var secondButton = new Button("To the third view!");
+        vBox.getChildren().addAll(secondButton, secondLabel);
 
         var gridPane = new GridPane();
         var thirdLabel = new Label("Third view!");
-        var thirdButton = new Button("To the firstButton view!");
+        var thirdButton = new Button("Back to the beginning!");
         gridPane.add(thirdButton, 0, 0);
         gridPane.add(thirdLabel, 0, 1);
 
@@ -35,7 +35,7 @@ public class NextPage extends Application {
         var thirdPage = new Scene(gridPane);
 
         firstButton.setOnAction(ae -> stage.setScene(secondPage));
-        second.setOnAction(ae -> stage.setScene(thirdPage));
+        secondButton.setOnAction(ae -> stage.setScene(thirdPage));
         thirdButton.setOnAction(ae -> stage.setScene(firstPage));
 
         stage.setScene(firstPage);
