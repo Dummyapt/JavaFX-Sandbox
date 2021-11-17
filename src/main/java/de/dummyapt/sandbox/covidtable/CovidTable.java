@@ -14,21 +14,25 @@ public class CovidTable extends Application {
     private final TableView<Entry> table = new TableView<>();
     private final TableColumn<Entry, String> name = new TableColumn<>("Entry");
     private final TableColumn<Entry, String> value = new TableColumn<>("Value");
-    private final Scene scene = new Scene(table);
+    private final TableColumn<Entry, String> date = new TableColumn<>("Date");
+    private final Scene scene = new Scene(table, 325, 500);
+    private final Image icon = new Image("https://cdn.pixabay.com/photo/2020/04/29/08/24/coronavirus-5107804_960_720.png");
 
     @Override
     public void start(Stage stage) {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         table.getColumns().add(name);
         table.getColumns().add(value);
+        table.getColumns().add(date);
         table.getItems().addAll(repository.getEntries());
         table.setPlaceholder(new Label("No data"));
 
         stage.setScene(scene);
         stage.setTitle("Covid Table");
-        stage.getIcons().add(new Image("https://cdn.pixabay.com/photo/2020/04/29/08/24/coronavirus-5107804_960_720.png"));
+        stage.getIcons().add(icon);
         stage.show();
     }
 }
