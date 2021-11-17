@@ -4,10 +4,10 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntryDatabase {
+class EntryDatabase {
     private final ArrayList<Entry> entries = new ArrayList<>();
 
-    public EntryDatabase() {
+    EntryDatabase() {
         try {
             var connection = DriverManager.getConnection("jdbc:mariadb://[::1]:3306/corona?user=ebkherne");
             var statement = connection.createStatement();
@@ -21,7 +21,7 @@ public class EntryDatabase {
         }
     }
 
-    public List<Entry> getEntries() {
+    List<Entry> getEntries() {
         return entries;
     }
 }

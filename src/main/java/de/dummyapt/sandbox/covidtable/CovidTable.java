@@ -15,7 +15,7 @@ public class CovidTable extends Application {
     private final TableColumn<Entry, String> name = new TableColumn<>("Entry");
     private final TableColumn<Entry, String> value = new TableColumn<>("Value");
     private final TableColumn<Entry, String> date = new TableColumn<>("Date");
-    private final Scene scene = new Scene(table, 325, 500);
+    private final Scene scene = new Scene(table);
     private final Image icon = new Image("https://cdn.pixabay.com/photo/2020/04/29/08/24/coronavirus-5107804_960_720.png");
 
     @Override
