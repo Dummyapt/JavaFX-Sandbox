@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class CovidTable extends Application {
+public final class CovidTable extends Application {
     private final EntryDatabase repository = new EntryDatabase();
     private final TableView<Entry> table = new TableView<>();
     private final TableColumn<Entry, String> name = new TableColumn<>("Entry");

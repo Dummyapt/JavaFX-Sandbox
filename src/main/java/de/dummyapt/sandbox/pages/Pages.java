@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Pages extends Application {
+public final class Pages extends Application {
 
     @Override
     public void start(Stage stage) {

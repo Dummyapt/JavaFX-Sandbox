@@ -3,7 +3,7 @@ package de.dummyapt.sandbox;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class SandboxFX extends Application {
+public final class SandboxFX extends Application {
 
     @Override
     public void start(Stage stage) {

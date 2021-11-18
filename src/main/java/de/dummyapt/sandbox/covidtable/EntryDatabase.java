@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
-class EntryDatabase {
+final class EntryDatabase {
     private final ArrayList<Entry> entries = new ArrayList<>();
 
     EntryDatabase() {

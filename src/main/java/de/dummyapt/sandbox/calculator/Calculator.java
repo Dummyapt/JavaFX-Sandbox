@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class Calculator extends Application {
+public final class Calculator extends Application {
     private final GridPane gridPane = new GridPane();
     private final Button[][] btnNumbers = new Button[3][6];
     private final TextField txtResult = new TextField();
