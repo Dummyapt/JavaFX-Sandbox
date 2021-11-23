@@ -1,21 +1,18 @@
 package de.dummyapt.sandbox.covidtable;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 final class EntryDatabase {
     private static final String URL = "jdbc:mariadb://[::1]:3306/corona?user=ebkherne";
-    private static final String QUERY = "SELECT lkname, inzidenz, datum FROM inzidenzen";
+    private static final String QUERY = "SELECT * FROM inzidenzen";
     private final ArrayList<Entry> entries = new ArrayList<>();
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
 
-    EntryDatabase() {
+    EntryDatabase() throws SQLException {
         try {
             connection = DriverManager.getConnection(URL);
             statement = connection.createStatement();
@@ -27,16 +24,12 @@ final class EntryDatabase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                assert resultSet != null;
-                assert statement != null;
-                assert connection != null;
-                resultSet.close();
-                statement.close();
-                connection.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            assert resultSet != null;
+            assert statement != null;
+            assert connection != null;
+            resultSet.close();
+            statement.close();
+            connection.close();
         }
     }
 
