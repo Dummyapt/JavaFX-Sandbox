@@ -1,15 +1,15 @@
 package de.dummyapt.sandbox.covidtable.database;
 
 import de.dummyapt.sandbox.covidtable.Entry;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class Database {
     private static final String URL = "jdbc:mariadb://[::1]:3306/corona?user=ebkherne";
     private static final String QUERY = "SELECT * FROM inzidenzen;";
-    private final ArrayList<Entry> entries = new ArrayList<>();
+    private final ObservableList<Entry> entries = FXCollections.observableArrayList();
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
@@ -35,7 +35,7 @@ public final class Database {
         }
     }
 
-    public List<Entry> getEntries() {
+    public ObservableList<Entry> getEntries() {
         return entries;
     }
 }
