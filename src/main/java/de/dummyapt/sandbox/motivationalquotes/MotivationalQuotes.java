@@ -2,6 +2,7 @@ package de.dummyapt.sandbox.motivationalquotes;
 
 public final class MotivationalQuotes {
     public static void main(String[] args) {
+        System.out.println("Test!");
     }
 }
 
