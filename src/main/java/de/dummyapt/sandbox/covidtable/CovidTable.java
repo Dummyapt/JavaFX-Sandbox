@@ -26,7 +26,7 @@ public final class CovidTable extends Application {
     public void start(Stage stage) throws SQLException {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
-        date.setCellValueFactory(new PropertyValueFactory<>("date")u);
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         tableView.getColumns().addAll(Arrays.asList(name, value, date));
         tableView.getItems().addAll(new Database().getEntries());
