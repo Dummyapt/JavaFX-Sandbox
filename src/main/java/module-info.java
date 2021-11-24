@@ -6,6 +6,7 @@ module de.dummyapt.sandboxfx {
     exports de.dummyapt.sandbox.pages;
     exports de.dummyapt.sandbox.calculator;
     exports de.dummyapt.sandbox.covidtable;
+    exports de.dummyapt.sandbox.covidtable.database;
     exports de.dummyapt.sandbox.numberchain;
     exports de.dummyapt.sandbox.numberchain.observer;
     exports de.dummyapt.sandbox.tictactoe;
