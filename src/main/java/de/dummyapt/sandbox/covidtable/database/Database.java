@@ -23,7 +23,7 @@ public final class Database {
                 entries.add(new Entry(resultSet.getString("lkname"),
                         resultSet.getDouble("inzidenz"),
                         resultSet.getDate("datum")));
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             assert resultSet != null;
