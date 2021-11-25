@@ -52,11 +52,7 @@ public final class CovidTable extends Application {
         tableView.setPlaceholder(new Label("No data"));
 
         refreshButton.setOnAction(ae -> {
-            try {
-                tableView.setItems(new Database().getEntries());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            tableView.setItems(repository.getEntries());
             tableView.refresh();
         });
 
