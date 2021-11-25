@@ -1,8 +1,16 @@
 package de.dummyapt.sandbox.motivationalquotes;
 
-public final class MotivationalQuotes {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public final class MotivationalQuotes extends Application {
     public static void main(String[] args) {
-        System.out.println("Test!");
+        Application.launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 }
 

@@ -27,6 +27,10 @@ public final class RandomNumber extends Application {
     private final Button button = new Button("_GO!");
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
 
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
+
     @Override
     public void start(Stage stage) {
         designPanel();
