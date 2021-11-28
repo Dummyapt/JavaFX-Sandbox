@@ -34,7 +34,9 @@ public final class CovidTable extends Application {
 
     @Override
     public void init() throws SQLException {
-        repository = new Database();
+        repository = new Database("jdbc:mariadb://[::1]:3306/corona?user=ebkherne",
+                "SELECT * FROM inzidenzen;");
+        repository.connect();
     }
 
     @Override
