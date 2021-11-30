@@ -37,17 +37,19 @@ public final class CovidTable extends Application {
 
     @Override
     public void start(Stage stage) throws SQLException {
-        TableColumn<Entry, String> name = new TableColumn<>("Name");
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        TableColumn<Entry, Double> value = new TableColumn<>("Value");
+        var lkId = new TableColumn<Entry, Integer>("LKID");
+        lkId.setCellValueFactory(new PropertyValueFactory<>("lkId"));
+        var lkName = new TableColumn<Entry, String>("LKName");
+        lkName.setCellValueFactory(new PropertyValueFactory<>("lkName"));
+        var value = new TableColumn<Entry, Double>("Value");
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
-        TableColumn<Entry, Date> date = new TableColumn<>("Date");
+        var date = new TableColumn<Entry, Date>("Date");
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        TableView<Entry> tableView = new TableView<>();
-        tableView.getColumns().addAll(Arrays.asList(name, value, date));
-        tableView.setItems(getEntries());
+        var tableView = new TableView<Entry>();
+        tableView.getColumns().addAll(Arrays.asList(lkId, lkName, value, date));
         tableView.setPlaceholder(new Label("No data"));
+        tableView.setItems(getEntries());
 
         var refreshButton = new Button("_Refresh");
         refreshButton.setOnAction(ae -> {
@@ -60,12 +62,12 @@ public final class CovidTable extends Application {
         borderPane.setBottom(refreshButton);
         BorderPane.setAlignment(refreshButton, Pos.CENTER);
 
-        var scene = new Scene(borderPane, 315, 400);
+        var scene = new Scene(borderPane);
         var icon = new Image("https://cdn.pixabay.com/photo/2020/04/29/08/24/coronavirus-5107804_960_720.png");
-        stage.setScene(scene);
-        stage.setTitle("Covid Table");
-        stage.setResizable(false);
+        stage.setTitle("CovidTable");
         stage.getIcons().add(icon);
+        stage.setResizable(false);
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -73,11 +75,17 @@ public final class CovidTable extends Application {
         ObservableList<Entry> entries = FXCollections.observableArrayList();
         try {
             var statement = connection.createStatement();
-            var resultSet = statement.executeQuery("SELECT * FROM inzidenzen");
+            var resultSet = statement.executeQuery("SELECT * FROM corona.inzidenzen");
             while (resultSet.next())
-                entries.add(new Entry(resultSet.getString("lkname"),
-                        resultSet.getDouble("inzidenz"),
-                        resultSet.getDate("datum")));
+                entries.add(
+                        new Entry(
+                                resultSet.getInt("id"),
+                                resultSet.getInt("lkid"),
+                                resultSet.getString("lkname"),
+                                resultSet.getDouble("inzidenz"),
+                                resultSet.getDate("datum")
+                        )
+                );
         } catch (SQLException e) {
             e.printStackTrace();
         }

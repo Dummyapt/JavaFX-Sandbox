@@ -1,42 +1,24 @@
 package de.dummyapt.sandbox.emschertrade;
 
-import de.dummyapt.sandbox.emschertrade.database.Database;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 
 public final class ProductTable extends Application {
-    private final BorderPane borderPane = new BorderPane();
-    private final TableView<Product> tableView = new TableView<>();
-    private final TableColumn<Product, Integer> id = new TableColumn<>("ID");
-    private final TableColumn<Product, String> name = new TableColumn<>("Name");
-    private final TableColumn<Product, Double> price = new TableColumn<>("Price");
-    private final TextField portInput = new TextField();
-    private final TextField databaseInput = new TextField();
-    private final TextField usernameInput = new TextField();
-    private final PasswordField passwordInput = new PasswordField();
-    private final TextField nameInput = new TextField();
-    private final TextField priceInput = new TextField();
-    private final Label statusLabel = new Label("Status:");
     private final Label statusText = new Label();
-    private final Button connectButton = new Button("Connect");
-    private final Button refreshButton = new Button("Refresh");
-    private final Button insertButton = new Button("Insert");
-    private final HBox hBoxServer = new HBox(portInput, databaseInput);
-    private final HBox hBoxUser = new HBox(usernameInput, passwordInput);
-    private final HBox hBoxStatus = new HBox(statusLabel, statusText);
-    private final VBox vBox = new VBox(hBoxStatus, hBoxServer, hBoxUser,
-            connectButton, refreshButton, nameInput, priceInput, insertButton);
-    private final Scene scene = new Scene(borderPane);
-    private Database repository;
+    private Connection connection;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -45,67 +27,126 @@ public final class ProductTable extends Application {
     @Override
     public void start(Stage stage) throws SQLException {
         var width = 75;
-        borderPane.setLeft(vBox);
-        borderPane.setCenter(tableView);
-
+        var id = new TableColumn<Product, Integer>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        var name = new TableColumn<Product, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        name.setMinWidth(width * 2.0);
+        var price = new TableColumn<Product, Double>("Price");
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
 
+        var tableView = new TableView<Product>();
         tableView.getColumns().addAll(Arrays.asList(id, name, price));
         tableView.setPlaceholder(new Label("No data"));
 
+        var portInput = new TextField();
         portInput.setPromptText("Port");
+        portInput.setMaxWidth(width);
+
+        var databaseInput = new TextField();
         databaseInput.setPromptText("Database");
+        databaseInput.setMaxWidth(width);
+
+        var usernameInput = new TextField();
         usernameInput.setPromptText("Username");
+        usernameInput.setMaxWidth(width);
+
+        var passwordInput = new PasswordField();
         passwordInput.setPromptText("Password");
+        passwordInput.setMaxWidth(width);
+
+        var nameInput = new TextField();
         nameInput.setPromptText("Name");
+
+        var priceInput = new TextField();
         priceInput.setPromptText("Price");
 
-        portInput.setMaxWidth(width);
-        databaseInput.setMaxWidth(width);
-        usernameInput.setMaxWidth(width);
-        passwordInput.setMaxWidth(width);
+        var statusLabel = new Label("Status:");
         statusLabel.setMinWidth(width);
+
         statusText.setMinWidth(width);
 
+        var connectButton = new Button("Connect");
         connectButton.setMinWidth(width * 2.0);
         connectButton.setOnAction(ae -> {
-            repository = new Database(portInput.getText(),
-                    usernameInput.getText(),
-                    passwordInput.getText(),
-                    databaseInput.getText());
             try {
-                repository.connect();
+                connection = Database.getConnection(
+                        portInput.getText(),
+                        databaseInput.getText(),
+                        usernameInput.getText(),
+                        passwordInput.getText()
+                );
                 statusText.setText("Connected");
             } catch (SQLException e) {
+                statusText.setText("Error");
                 e.printStackTrace();
-            } finally {
-                tableView.setItems(repository.getEntries());
-                tableView.refresh();
             }
+            tableView.setItems(getProducts());
         });
 
+        var refreshButton = new Button("_Refresh");
         refreshButton.setMinWidth(width * 2.0);
-        refreshButton.setOnAction(ae -> connectButton.fire());
-
-        insertButton.setMinWidth(width * 2.0);
-        insertButton.setOnAction(actionEvent -> {
-            connectButton.fire();
-            try {
-                repository.createEntry(nameInput.getText(), Double.parseDouble(priceInput.getText()));
-                statusText.setText("Entry created");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                refreshButton.fire();
-            }
+        refreshButton.setOnAction(ae -> {
+            if (connection == null)
+                statusText.setText("Error");
+            tableView.setItems(getProducts());
+            tableView.refresh();
         });
 
-        stage.setScene(scene);
+        var insertButton = new Button("_Insert");
+        insertButton.setMinWidth(width * 2.0);
+        insertButton.setOnAction(actionEvent -> createProduct(name.getText(), Double.parseDouble(priceInput.getText())));
+
+        var hBoxServer = new HBox(portInput, databaseInput);
+        var hBoxUser = new HBox(usernameInput, passwordInput);
+        var hBoxStatus = new HBox(statusLabel, statusText);
+        var vBox = new VBox(hBoxStatus,
+                hBoxServer,
+                hBoxUser,
+                connectButton,
+                refreshButton,
+                nameInput,
+                priceInput,
+                insertButton);
+
+        var borderPane = new BorderPane();
+        borderPane.setLeft(vBox);
+        borderPane.setCenter(tableView);
+
+        var scene = new Scene(borderPane);
+        var icon = new Image("https://static.thenounproject.com/png/161182-200.png");
         stage.setTitle("EmscherTrade");
-        stage.setResizable(true);
+        stage.getIcons().add(icon);
+        stage.setResizable(false);
+        stage.setScene(scene);
         stage.show();
+    }
+
+    private ObservableList<Product> getProducts() {
+        ObservableList<Product> products = FXCollections.observableArrayList();
+        try {
+            var statement = connection.createStatement();
+            var resultSet = statement.executeQuery("SELECT * FROM emschertrade.products");
+            while (resultSet.next())
+                products.add(
+                        new Product(
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getDouble("price")
+                        )
+                );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    private void createProduct(String name, double price) {
+        try {
+            connection.createStatement().executeQuery(
+                    String.format("INSERT INTO emschertrade.products (name, price) VALUES ('%s', %s)", name, price)
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

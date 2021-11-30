@@ -2,10 +2,17 @@ package de.dummyapt.sandbox.covidtable;
 
 import java.sql.Date;
 
-@SuppressWarnings("unused")
-public record Entry(String name, double value, Date date) {
-    public String getName() {
-        return name;
+public record Entry(int id, int lkId, String lkName, double value, Date date) {
+    public int getId() {
+        return id;
+    }
+
+    public int getLkId() {
+        return lkId;
+    }
+
+    public String getLkName() {
+        return lkName;
     }
 
     public double getValue() {
