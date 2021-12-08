@@ -19,6 +19,8 @@ import java.util.Arrays;
 
 public final class CovidTable extends Application {
     private Connection connection;
+    private final BorderPane borderPane = new BorderPane();
+    private final TableView<Entry> tableView = new TableView<>();
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -44,9 +46,6 @@ public final class CovidTable extends Application {
         var exitIcon = new ImageView(new Image("https://findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/exit.png"));
         exitIcon.setFitHeight(25);
         exitIcon.setFitWidth(25);
-        var checkIcon = new ImageView(new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/OOjs_UI_icon_check.svg/1200px-OOjs_UI_icon_check.svg.png"));
-        checkIcon.setFitHeight(25);
-        checkIcon.setFitWidth(25);
         var starIcon = new ImageView(new Image("https://image.flaticon.com/icons/png/512/69/69544.png"));
         starIcon.setFitHeight(25);
         starIcon.setFitWidth(25);
@@ -56,12 +55,15 @@ public final class CovidTable extends Application {
 
         var dataItem = new MenuItem("_Data");
         dataItem.setGraphic(lensIcon);
+        dataItem.setOnAction(ae -> {
+            createTable();
+            borderPane.setCenter(tableView);
+        });
         var newItem = new MenuItem("_New");
         newItem.setGraphic(sheetIcon);
         var exitItem = new MenuItem("_Exit");
         exitItem.setGraphic(exitIcon);
-        var lightModeItem = new MenuItem("_Light mode");
-        lightModeItem.setGraphic(checkIcon);
+        var lightModeItem = new CheckMenuItem("_Light mode");
         var darkModeItem = new MenuItem("_Dark mode");
         darkModeItem.setDisable(true);
         var infoItem = new MenuItem("_Info");
@@ -79,20 +81,6 @@ public final class CovidTable extends Application {
         var menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, viewMenu, aboutMenu);
 
-        var lkId = new TableColumn<Entry, Integer>("LKID");
-        lkId.setCellValueFactory(new PropertyValueFactory<>("lkId"));
-        var lkName = new TableColumn<Entry, String>("LKName");
-        lkName.setCellValueFactory(new PropertyValueFactory<>("lkName"));
-        var value = new TableColumn<Entry, Double>("Value");
-        value.setCellValueFactory(new PropertyValueFactory<>("value"));
-        var date = new TableColumn<Entry, Date>("Date");
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-        var tableView = new TableView<Entry>();
-        tableView.getColumns().addAll(Arrays.asList(lkId, lkName, value, date));
-        tableView.setPlaceholder(new Label("No data"));
-        tableView.setItems(getEntries());
-
         var refreshIcon = new ImageView(new Image("https://icons.veryicon.com/png/o/system/avuex-cli-icon/refresh-165.png"));
         refreshIcon.setFitHeight(25);
         refreshIcon.setFitWidth(25);
@@ -104,19 +92,33 @@ public final class CovidTable extends Application {
             tableView.refresh();
         });
 
-        var borderPane = new BorderPane();
         borderPane.setTop(menuBar);
-        borderPane.setCenter(tableView);
         borderPane.setBottom(refreshButton);
         BorderPane.setAlignment(refreshButton, Pos.CENTER);
 
-        var scene = new Scene(borderPane);
+        var scene = new Scene(borderPane, 360, 250);
         var icon = new Image("https://cdn.pixabay.com/photo/2020/04/29/08/24/coronavirus-5107804_960_720.png");
         stage.setTitle("CovidTable");
         stage.getIcons().add(icon);
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private TableView<Entry> createTable() {
+        var lkId = new TableColumn<Entry, Integer>("LKID");
+        lkId.setCellValueFactory(new PropertyValueFactory<>("lkId"));
+        var lkName = new TableColumn<Entry, String>("LKName");
+        lkName.setCellValueFactory(new PropertyValueFactory<>("lkName"));
+        var value = new TableColumn<Entry, Double>("Value");
+        value.setCellValueFactory(new PropertyValueFactory<>("value"));
+        var date = new TableColumn<Entry, Date>("Date");
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        tableView.getColumns().addAll(Arrays.asList(lkId, lkName, value, date));
+        tableView.setPlaceholder(new Label("No data"));
+        tableView.setItems(getEntries());
+        return tableView;
     }
 
     private ObservableList<Entry> getEntries() {
