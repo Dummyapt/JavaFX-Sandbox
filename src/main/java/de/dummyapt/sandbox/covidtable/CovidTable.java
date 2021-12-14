@@ -50,7 +50,7 @@ public final class CovidTable extends Application {
         var lightModeItem = new CheckMenuItem("_Light mode");
         lightModeItem.setSelected(true);
 
-        var darkModeItem = new MenuItem("_Dark mode");
+        var darkModeItem = new MenuItem("Dark mode");
         darkModeItem.setDisable(true);
 
         var infoItem = new MenuItem("_Info");
