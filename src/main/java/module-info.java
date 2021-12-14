@@ -1,18 +1,18 @@
-module de.dummyapt.sandboxfx {
+module de.dummyapt.javafx_sandbox {
     requires javafx.controls;
     requires java.sql;
 
-    exports de.dummyapt.sandbox;
-    exports de.dummyapt.sandbox.pages;
-    exports de.dummyapt.sandbox.calculator;
-    exports de.dummyapt.sandbox.covidtable;
-    exports de.dummyapt.sandbox.emschertrade;
-    exports de.dummyapt.sandbox.numberchain;
-    exports de.dummyapt.sandbox.numberchain.observer;
-    exports de.dummyapt.sandbox.tictactoe;
-    exports de.dummyapt.sandbox.tictactoe.observer;
-    exports de.dummyapt.sandbox.randomnumber;
-    exports de.dummyapt.sandbox.moneyexchanger;
-    exports de.dummyapt.sandbox.connectfour;
-    exports de.dummyapt.sandbox.connectfour.observer;
+    exports de.dummyapt.javafx_sandbox;
+    exports de.dummyapt.javafx_sandbox.pages;
+    exports de.dummyapt.javafx_sandbox.calculator;
+    exports de.dummyapt.javafx_sandbox.covidtable;
+    exports de.dummyapt.javafx_sandbox.emschertrade;
+    exports de.dummyapt.javafx_sandbox.numberchain;
+    exports de.dummyapt.javafx_sandbox.numberchain.observer;
+    exports de.dummyapt.javafx_sandbox.tictactoe;
+    exports de.dummyapt.javafx_sandbox.tictactoe.observer;
+    exports de.dummyapt.javafx_sandbox.randomnumber;
+    exports de.dummyapt.javafx_sandbox.moneyexchanger;
+    exports de.dummyapt.javafx_sandbox.connectfour;
+    exports de.dummyapt.javafx_sandbox.connectfour.observer;
 }
