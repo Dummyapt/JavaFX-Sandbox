@@ -22,13 +22,24 @@ public final class Panel extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        var refreshButton = new Button("_Refresh");
+        refreshButton.setGraphic(new ImageView(new Image("file:src/main/resources/covidtable/images/refresh.png")));
+        refreshButton.setOnAction(ae -> borderPane.setCenter(covidTable.getTableView()));
+
         var showDataItem = new MenuItem("_Data");
         showDataItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidtable/images/show.png")));
-        showDataItem.setOnAction(ae -> borderPane.setCenter(covidTable.getTableView()));
+        showDataItem.setOnAction(ae -> {
+            borderPane.setCenter(covidTable.getTableView());
+            borderPane.setBottom(refreshButton);
+            BorderPane.setAlignment(refreshButton, Pos.CENTER);
+        });
 
         var newEntryItem = new MenuItem("_New");
         newEntryItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidtable/images/new.png")));
-        newEntryItem.setOnAction(ae -> borderPane.setCenter(getEntryPanel()));
+        newEntryItem.setOnAction(ae -> {
+            borderPane.setCenter(getEntryPanel());
+            borderPane.setBottom(null);
+        });
 
         var exitItem = new MenuItem("_Exit");
         exitItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidtable/images/exit.png")));
@@ -42,7 +53,10 @@ public final class Panel extends Application {
 
         var infoItem = new MenuItem("_Info");
         infoItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidtable/images/about.png")));
-        infoItem.setOnAction(ae -> borderPane.setCenter(new Label("Made by Dummyapt")));
+        infoItem.setOnAction(ae -> {
+            borderPane.setCenter(new Label("Made by Dummyapt"));
+            borderPane.setBottom(null);
+        });
 
         var helpItem = new MenuItem("_Help");
         helpItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidtable/images/help.png")));
@@ -58,14 +72,8 @@ public final class Panel extends Application {
         var menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, viewMenu, aboutMenu);
 
-        var refreshButton = new Button("_Refresh");
-        refreshButton.setGraphic(new ImageView(new Image("file:src/main/resources/covidtable/images/refresh.png")));
-        refreshButton.setOnAction(ae -> borderPane.setCenter(covidTable.getTableView()));
-
         borderPane.setTop(menuBar);
         borderPane.setCenter(covidTable.getTableView().getPlaceholder());
-        borderPane.setBottom(refreshButton);
-        BorderPane.setAlignment(refreshButton, Pos.CENTER);
 
         stage.getIcons().add(new Image("https://cdn-icons-png.flaticon.com/512/2913/2913604.png"));
         stage.setTitle("CovidTable");
