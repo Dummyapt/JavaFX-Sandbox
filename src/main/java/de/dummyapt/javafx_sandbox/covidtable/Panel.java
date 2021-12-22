@@ -83,27 +83,30 @@ public final class Panel extends Application {
     }
 
     private VBox getEntryPanel() {
-        var lkIdLabel = new Label("LKID");
+        var statusLabel = new Label();
+
         var lkIdInput = new TextField();
-
-        var lkNameLabel = new Label("LKName");
         var lkNameInput = new TextField();
-
-        var valueLabel = new Label("Value (X.YY)");
         var valueInput = new TextField();
-
-        var dateLabel = new Label("Date (YYYY-MM-DD)");
         var datePicker = new DatePicker();
 
-        var statusLabel = new Label();
         var submitButton = new Button("Submit");
         submitButton.setOnAction(ae -> {
-            if (covidTable.addEntry(Integer.parseInt(lkIdInput.getText()), lkNameInput.getText(), Double.parseDouble(valueInput.getText()), Date.valueOf(datePicker.getValue())))
+            if (covidTable.addEntry(
+                    Integer.parseInt(lkIdInput.getText()),
+                    lkNameInput.getText(),
+                    Double.parseDouble(valueInput.getText()),
+                    Date.valueOf(datePicker.getValue())))
                 statusLabel.setText("Success!");
             else statusLabel.setText("Error!");
         });
 
-        var vBox = new VBox(new VBox(lkIdLabel, lkIdInput), new VBox(lkNameLabel, lkNameInput), new VBox(valueLabel, valueInput), new VBox(dateLabel, datePicker), submitButton, statusLabel);
+        var vBox = new VBox(
+                new VBox(new Label("LKID"), lkIdInput),
+                new VBox(new Label("LKName"), lkNameInput),
+                new VBox(new Label("Value (X.YY)"), valueInput),
+                new VBox(new Label("Date (YYYY-MM-DD)"), datePicker),
+                submitButton, statusLabel);
         vBox.setSpacing(5);
 
         return vBox;
