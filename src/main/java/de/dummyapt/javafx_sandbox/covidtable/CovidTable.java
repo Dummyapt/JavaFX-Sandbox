@@ -56,7 +56,11 @@ public final class CovidTable {
 
     boolean addEntry(int lkId, String lkName, double value, Date date) {
         try {
-            connection.createStatement().executeQuery("INSERT INTO corona.inzidenzen (lkid, lkname, inzidenz, datum) " + String.format("VALUES (%s, '%s', %s, '%s');", lkId, lkName, value, date));
+            var preparedStatement = connection.prepareStatement("INSERT INTO corona.inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);");
+            preparedStatement.setString(1, String.valueOf(lkId));
+            preparedStatement.setString(2, lkName);
+            preparedStatement.setString(3, String.valueOf(value));
+            preparedStatement.setString(4, String.valueOf(date));
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
