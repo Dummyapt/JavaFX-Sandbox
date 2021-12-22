@@ -83,13 +83,12 @@ public final class Panel extends Application {
     }
 
     private VBox getEntryPanel() {
-        var statusLabel = new Label();
-
         var lkIdInput = new TextField();
         var lkNameInput = new TextField();
         var valueInput = new TextField();
         var datePicker = new DatePicker();
 
+        var statusLabel = new Label();
         var submitButton = new Button("Submit");
         submitButton.setOnAction(ae -> {
             if (covidTable.addEntry(
