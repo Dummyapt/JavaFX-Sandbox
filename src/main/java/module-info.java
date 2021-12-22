@@ -2,7 +2,6 @@ module de.dummyapt.javafx_sandbox {
     requires javafx.controls;
     requires java.sql;
 
-    exports de.dummyapt.javafx_sandbox;
     exports de.dummyapt.javafx_sandbox.pages;
     exports de.dummyapt.javafx_sandbox.calculator;
     exports de.dummyapt.javafx_sandbox.covidtable;
