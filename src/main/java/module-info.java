@@ -14,4 +14,6 @@ module de.dummyapt.javafx_sandbox {
     exports de.dummyapt.javafx_sandbox.moneyexchanger;
     exports de.dummyapt.javafx_sandbox.connectfour;
     exports de.dummyapt.javafx_sandbox.connectfour.observer;
+    exports de.dummyapt.javafx_sandbox.projektwoche;
+    exports de.dummyapt.javafx_sandbox.projektwoche.observer;
 }
