@@ -16,7 +16,7 @@ public final class Database {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Connection getConnection() throws SQLException {
+    static Connection getConnection() throws SQLException {
         if (connection == null)
             connection = DriverManager.getConnection(URL + ':' + PORT + '/' + DB, USER, PASS);
         return connection;

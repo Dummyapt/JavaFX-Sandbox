@@ -12,7 +12,7 @@ public final class Database {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Connection getConnection(String... credentials) throws SQLException {
+    static Connection getConnection(String... credentials) throws SQLException {
         if (connection == null)
             connection = DriverManager.getConnection(URL + ':' + credentials[0] + '/' + credentials[1],
                     credentials[2], credentials[3]);
