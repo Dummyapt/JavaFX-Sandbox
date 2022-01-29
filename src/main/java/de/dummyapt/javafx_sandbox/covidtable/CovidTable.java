@@ -17,12 +17,6 @@ public final class CovidTable {
     private Connection connection;
 
     public CovidTable() {
-        try {
-            connection = Database.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         var lkId = new TableColumn<Entry, Integer>("lkID");
         lkId.setCellValueFactory(new PropertyValueFactory<>("lkId"));
         var lkName = new TableColumn<Entry, String>("LKName");
@@ -45,6 +39,7 @@ public final class CovidTable {
     private ObservableList<Entry> getEntries() {
         ObservableList<Entry> entries = FXCollections.observableArrayList();
         try {
+            connection = Database.getConnection();
             var resultSet = connection.createStatement().executeQuery("SELECT * FROM corona.inzidenzen;");
             while (resultSet.next())
                 entries.add(new Entry(resultSet.getInt("id"), resultSet.getInt("lkid"), resultSet.getString("lkname"), resultSet.getDouble("inzidenz"), resultSet.getDate("datum")));
