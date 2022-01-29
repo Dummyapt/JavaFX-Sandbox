@@ -4,7 +4,7 @@ module de.dummyapt.javafx_sandbox {
 
     exports de.dummyapt.javafx_sandbox.pages;
     exports de.dummyapt.javafx_sandbox.calculator;
-    exports de.dummyapt.javafx_sandbox.covidtable;
+    exports de.dummyapt.javafx_sandbox.covidapt;
     exports de.dummyapt.javafx_sandbox.emschertrade;
     exports de.dummyapt.javafx_sandbox.numberchain;
     exports de.dummyapt.javafx_sandbox.numberchain.observer;

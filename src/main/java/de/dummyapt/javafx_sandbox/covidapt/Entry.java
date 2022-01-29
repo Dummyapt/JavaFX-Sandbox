@@ -1,4 +1,4 @@
-package de.dummyapt.javafx_sandbox.covidtable;
+package de.dummyapt.javafx_sandbox.covidapt;
 
 import java.sql.Date;
 
