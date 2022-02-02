@@ -6,20 +6,28 @@ import javafx.scene.layout.GridPane;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public final class InsertView {
     private final GridPane gridPane = new GridPane();
+    private final TextField lkIdInput = new TextField();
+    private final TextField lkNameInput = new TextField();
+    private final TextField valueInput = new TextField();
+    private final DatePicker datePicker = new DatePicker();
     private final Alert alert = new Alert(Alert.AlertType.NONE);
 
+
     public InsertView() {
-        var lkIdInput = new TextField();
-        var lkNameInput = new TextField();
-        var valueInput = new TextField();
-        var datePicker = new DatePicker();
         var statusLabel = new Label();
 
         var submitButton = new Button("Submit");
         submitButton.setOnAction(ae -> {
+            if (statusLabel.getText().equals("New entry added!") || statusLabel.getText().equals("Canceled!"))
+                statusLabel.setText("");
+            if (lkIdInput.getText().equals("") ||
+                    lkNameInput.getText().equals("") ||
+                    valueInput.getText().equals(""))
+                statusLabel.setText("Invalid input!");
             try {
                 var preparedStatement = Database.getConnection().prepareStatement("INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);");
                 preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
@@ -27,9 +35,26 @@ public final class InsertView {
                 preparedStatement.setDouble(3, Double.parseDouble(valueInput.getText()));
                 preparedStatement.setDate(4, Date.valueOf(datePicker.getValue()));
                 preparedStatement.executeUpdate();
-                statusLabel.setText("Success!");
+
+                alert.setAlertType(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Please confirm your action");
+                alert.setContentText("Do you want to add the entry now?");
+
+                var result = alert.showAndWait();
+                if (result.isPresent()) {
+                    if (result.get() == ButtonType.APPLY) {
+                        preparedStatement.executeUpdate();
+                        clearInputs();
+                        statusLabel.setText("New entry added!");
+                    } else {
+                        preparedStatement.close();
+                        clearInputs();
+                        statusLabel.setText("Canceled!");
+                    }
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.getLocalizedMessage();
             }
         });
 
@@ -46,6 +71,13 @@ public final class InsertView {
 
         gridPane.setHgap(5);
         gridPane.setVgap(5);
+    }
+
+    private void clearInputs() {
+        lkIdInput.clear();
+        lkNameInput.clear();
+        valueInput.clear();
+        datePicker.getEditor().clear();
     }
 
     public Node getView() {

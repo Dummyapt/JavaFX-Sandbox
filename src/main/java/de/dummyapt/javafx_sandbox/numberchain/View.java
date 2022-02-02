@@ -40,7 +40,7 @@ public final class View implements Observer {
             try {
                 controller.stop();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.getLocalizedMessage();
             }
         });
 
