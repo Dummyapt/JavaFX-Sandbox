@@ -1,10 +1,7 @@
 package de.dummyapt.javafx_sandbox.covidapt;
 
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.sql.Date;
@@ -12,6 +9,7 @@ import java.sql.SQLException;
 
 public final class InsertView {
     private final GridPane gridPane = new GridPane();
+    private final Alert alert = new Alert(Alert.AlertType.NONE);
 
     public InsertView() {
         var lkIdInput = new TextField();
