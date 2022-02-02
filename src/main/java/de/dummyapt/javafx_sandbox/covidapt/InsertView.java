@@ -22,13 +22,18 @@ public final class InsertView {
 
         var submitButton = new Button("Submit");
         submitButton.setOnAction(ae -> {
-            if (addEntry(
-                    Integer.parseInt(lkIdInput.getText()),
-                    lkNameInput.getText(),
-                    Double.parseDouble(valueInput.getText()),
-                    Date.valueOf(datePicker.getValue())))
+            try {
+                var sql = "INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);";
+                var preparedStatement = Database.getConnection().prepareStatement(sql);
+                preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
+                preparedStatement.setString(2, lkNameInput.getText());
+                preparedStatement.setDouble(3, Double.parseDouble(valueInput.getText()));
+                preparedStatement.setDate(4, Date.valueOf(datePicker.getValue()));
                 statusLabel.setText("Success!");
-            else statusLabel.setText("Error!");
+            } catch (SQLException e) {
+                e.getLocalizedMessage();
+                statusLabel.setText("Error!");
+            }
         });
 
         gridPane.add(new Label("Location ID"), 1, 0);
@@ -43,20 +48,6 @@ public final class InsertView {
 
         gridPane.setHgap(5);
         gridPane.setVgap(5);
-    }
-
-    private boolean addEntry(int lkId, String lkName, double value, Date date) {
-        try {
-            var preparedStatement = Database.getConnection().prepareStatement("INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);");
-            preparedStatement.setString(1, String.valueOf(lkId));
-            preparedStatement.setString(2, lkName);
-            preparedStatement.setString(3, String.valueOf(value));
-            preparedStatement.setString(4, String.valueOf(date));
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public Node getView() {
