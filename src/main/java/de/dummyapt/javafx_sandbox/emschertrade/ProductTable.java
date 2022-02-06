@@ -78,7 +78,7 @@ public final class ProductTable extends Application {
                 statusText.setText("Connected");
             } catch (SQLException e) {
                 statusText.setText("Error");
-                e.getLocalizedMessage();
+                e.e.printStackTrace();
             }
             tableView.setItems(getProducts());
         });
@@ -135,7 +135,7 @@ public final class ProductTable extends Application {
                         )
                 );
         } catch (SQLException e) {
-            e.getLocalizedMessage();
+            e.e.printStackTrace();
         }
         return products;
     }
@@ -146,7 +146,7 @@ public final class ProductTable extends Application {
                     String.format("INSERT INTO emschertrade.products (name, price) VALUES ('%s', %s)", name, price)
             );
         } catch (SQLException e) {
-            e.getLocalizedMessage();
+            e.e.printStackTrace();
         }
     }
 }

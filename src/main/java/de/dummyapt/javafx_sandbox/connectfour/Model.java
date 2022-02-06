@@ -120,7 +120,7 @@ public final class Model implements Observable {
                 var col = pCol + i;
             }
         } catch (Exception e) {
-            e.getLocalizedMessage();
+            e.e.printStackTrace();
         }
 
         // left to right diag -> DEGUB, PLEASE! Solution like vertical
@@ -131,7 +131,7 @@ public final class Model implements Observable {
                 var col = pCol + i;
             }
         } catch (Exception e) {
-            e.getLocalizedMessage();
+            e.e.printStackTrace();
         }
 
         return false;
