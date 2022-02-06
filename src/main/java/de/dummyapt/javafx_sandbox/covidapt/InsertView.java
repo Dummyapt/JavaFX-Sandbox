@@ -6,7 +6,6 @@ import javafx.scene.layout.GridPane;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public final class InsertView {
     private final GridPane gridPane = new GridPane();
