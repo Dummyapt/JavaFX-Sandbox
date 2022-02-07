@@ -92,7 +92,7 @@ public final class RandomNumber extends Application {
                 }
                 output.setText(String.valueOf(new SecureRandom().nextInt(max) + min));
             } catch (Exception e) {
-                e.e.printStackTrace();
+                e.printStackTrace();
             }
         });
     }

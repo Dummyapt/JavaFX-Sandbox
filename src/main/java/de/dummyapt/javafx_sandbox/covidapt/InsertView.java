@@ -53,7 +53,7 @@ public final class InsertView {
                     }
                 }
             } catch (SQLException e) {
-                e.e.printStackTrace();
+                e.printStackTrace();
             }
         });
 

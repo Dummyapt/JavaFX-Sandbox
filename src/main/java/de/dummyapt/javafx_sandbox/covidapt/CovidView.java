@@ -69,7 +69,7 @@ public final class CovidView {
                                 resultSet.getDate("datum"))
                 );
         } catch (SQLException e) {
-            e.e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -87,7 +87,7 @@ public final class CovidView {
                                 resultSet.getDate("datum"))
                 );
         } catch (SQLException e) {
-            e.e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

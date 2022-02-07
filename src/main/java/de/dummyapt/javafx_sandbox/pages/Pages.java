@@ -10,39 +10,42 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public final class Pages extends Application {
+    private final Button borderPaneButton = new Button("To the second view!");
+    private final Button vBoxButton = new Button("To the third view!");
+    private final Button gridPaneButton = new Button("To the first view!");
+
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     @Override
     public void start(Stage stage) {
-        var borderPane = new BorderPane();
-        var firstLabel = new Label("First view!");
-        var firstButton = new Button("To the second view!");
-        borderPane.setTop(firstButton);
-        borderPane.setCenter(firstLabel);
+        borderPaneButton.setOnAction(ae -> stage.setScene(getVBox()));
+        vBoxButton.setOnAction(ae -> stage.setScene(getGridPane()));
+        gridPaneButton.setOnAction(ae -> stage.setScene(getBorderPane()));
 
-        var vBox = new VBox();
-        var secondLabel = new Label("Second view!");
-        var secondButton = new Button("To the third view!");
-        vBox.getChildren().addAll(secondButton, secondLabel);
-
-        var gridPane = new GridPane();
-        var thirdLabel = new Label("Third view!");
-        var thirdButton = new Button("Back to the beginning!");
-        gridPane.add(thirdButton, 0, 0);
-        gridPane.add(thirdLabel, 0, 1);
-
-        var firstPage = new Scene(borderPane);
-        var secondPage = new Scene(vBox);
-        var thirdPage = new Scene(gridPane);
-
-        firstButton.setOnAction(ae -> stage.setScene(secondPage));
-        secondButton.setOnAction(ae -> stage.setScene(thirdPage));
-        thirdButton.setOnAction(ae -> stage.setScene(firstPage));
-
-        stage.setScene(firstPage);
+        stage.setScene(getBorderPane());
         stage.setResizable(false);
         stage.show();
+    }
+
+    private Scene getBorderPane() {
+        final var borderPane = new BorderPane();
+        borderPane.setTop(borderPaneButton);
+        borderPane.setCenter(new Label("First view!"));
+        return new Scene(borderPane);
+    }
+
+    private Scene getGridPane() {
+        final var gridPane = new GridPane();
+        gridPane.add(gridPaneButton, 0, 0);
+        gridPane.add(new Label("Third view!"), 0, 1);
+        return new Scene(gridPane);
+    }
+
+    private Scene getVBox() {
+        final var vBox = new VBox();
+        vBox.getChildren().addAll(vBoxButton, new Label("Second view!"));
+        return new Scene(vBox);
     }
 }
