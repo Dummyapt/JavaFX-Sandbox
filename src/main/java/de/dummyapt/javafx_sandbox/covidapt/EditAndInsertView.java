@@ -16,8 +16,6 @@ public final class EditAndInsertView {
     private final TextField valueInput = new TextField();
     private final DatePicker datePicker = new DatePicker();
     private final Alert alert = new Alert(Alert.AlertType.NONE);
-    private final CovidView covidView = new CovidView();
-
 
     public EditAndInsertView() {
         clearInputs();
