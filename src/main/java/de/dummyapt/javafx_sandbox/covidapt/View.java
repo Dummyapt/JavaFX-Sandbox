@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public final class View extends Application {
-    public static BorderPane BORDER_PANE = new BorderPane();
+    final BorderPane borderPane = new BorderPane();
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -17,16 +17,16 @@ public final class View extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        var covidView = new CovidView();
+        var covidView = new CovidView(this);
         var insertView = new EditAndInsertView();
 
         var showDataItem = new MenuItem("_Data");
         showDataItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidapt/show.png")));
-        showDataItem.setOnAction(ae -> BORDER_PANE.setCenter(covidView.getView()));
+        showDataItem.setOnAction(ae -> borderPane.setCenter(covidView.getView()));
 
         var newEntryItem = new MenuItem("_New");
         newEntryItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidapt/new.png")));
-        newEntryItem.setOnAction(ae -> BORDER_PANE.setCenter(insertView.getView()));
+        newEntryItem.setOnAction(ae -> borderPane.setCenter(insertView.getView()));
 
         var exitItem = new MenuItem("Exit");
         exitItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidapt/exit.png")));
@@ -40,7 +40,7 @@ public final class View extends Application {
 
         var infoItem = new MenuItem("_Info");
         infoItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidapt/about.png")));
-        infoItem.setOnAction(ae -> BORDER_PANE.setCenter(new Label("Made by Dummyapt")));
+        infoItem.setOnAction(ae -> borderPane.setCenter(new Label("Made by Dummyapt")));
 
         var helpItem = new MenuItem("_Help");
         helpItem.setGraphic(new ImageView(new Image("file:src/main/resources/covidapt/help.png")));
@@ -56,13 +56,13 @@ public final class View extends Application {
         var menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, viewMenu, aboutMenu);
 
-        BORDER_PANE.setTop(menuBar);
-        BORDER_PANE.setCenter(covidView.getView());
+        borderPane.setTop(menuBar);
+        borderPane.setCenter(covidView.getView());
 
         stage.getIcons().add(new Image("file:src/main/resources/covidapt/icon.png"));
         stage.setTitle("CovidView");
         stage.setResizable(false);
-        stage.setScene(new Scene(BORDER_PANE, 450, 350));
+        stage.setScene(new Scene(borderPane, 450, 350));
         stage.show();
     }
 }

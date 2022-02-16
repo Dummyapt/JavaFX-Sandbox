@@ -16,7 +16,7 @@ public final class CovidView {
     private final ObservableList<Entry> entries = FXCollections.observableArrayList();
     private final VBox vBox = new VBox();
 
-    public CovidView() {
+    public CovidView(View view) {
         var id = new TableColumn<Entry, Integer>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         var lkId = new TableColumn<Entry, Integer>("lkID");
@@ -33,11 +33,8 @@ public final class CovidView {
         tableView.setRowFactory(tv -> {
             TableRow<Entry> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                    Entry rowData = row.getItem();
-                    var editAndInsertView = new EditAndInsertView(rowData);
-                    View.BORDER_PANE.setCenter(editAndInsertView.getView());
-                }
+                if (event.getClickCount() == 2 && (!row.isEmpty()))
+                    view.borderPane.setCenter(new EditAndInsertView(row.getItem()).getView());
             });
             return row;
         });
