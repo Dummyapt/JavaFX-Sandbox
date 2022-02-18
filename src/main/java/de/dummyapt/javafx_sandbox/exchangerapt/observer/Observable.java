@@ -1,4 +1,4 @@
-package de.dummyapt.javafx_sandbox.tictactoe.observer;
+package de.dummyapt.javafx_sandbox.exchangerapt.observer;
 
 public interface Observable {
     void registerObserver(Observer pObserver);
@@ -7,9 +7,5 @@ public interface Observable {
 
     void removeObserver(Observer pObserver);
 
-    int getActivePlayer();
-
-    int[][] getGameField();
-
-    String getStatusText();
+    int[] getCoins();
 }

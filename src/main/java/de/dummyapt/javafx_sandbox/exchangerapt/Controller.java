@@ -1,10 +1,11 @@
-package de.dummyapt.javafx_sandbox.connectfour;
+package de.dummyapt.javafx_sandbox.exchangerapt;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-public final class Controller extends Application {
+public class Controller extends Application {
     private Model model;
     private View view;
 
@@ -23,8 +24,8 @@ public final class Controller extends Application {
     public void start(Stage stage) {
         final var scene = new Scene(view.getView());
         stage.setScene(scene);
-        stage.setTitle("Connect4 by Dummyapt");
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
 
@@ -32,7 +33,7 @@ public final class Controller extends Application {
         model.reset();
     }
 
-    public void setColumn(int pCol) {
-        model.setTile(pCol);
+    public void exchange(double total) {
+        model.exchange(total);
     }
 }

@@ -26,6 +26,7 @@ public final class Pages extends Application {
 
         stage.setScene(getBorderPane());
         stage.setResizable(false);
+        stage.setTitle("Pages | Dummyapt");
         stage.show();
     }
 

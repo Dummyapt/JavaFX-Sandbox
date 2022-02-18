@@ -15,6 +15,7 @@ public final class Model implements Observable {
         activePlayer = 1;
         gameField = new int[3][3];
         observerList = new LinkedList<>();
+        reset();
     }
 
     @Override
@@ -49,13 +50,9 @@ public final class Model implements Observable {
     }
 
     public void setTile(int pCol, int pRow) {
-        if (gameOver()) {
-            return;
-        }
-
-        if (gameField[pCol][pRow] == 0) {
-            gameField[pCol][pRow] = activePlayer;
-        } else {
+        if (gameOver()) return;
+        if (gameField[pCol][pRow] == 0) gameField[pCol][pRow] = activePlayer;
+        else {
             statusText = "Player " + gameField[pRow][pCol] + " already played in this field!";
             return;
         }
@@ -68,8 +65,8 @@ public final class Model implements Observable {
         }
 
         int counter = -1;
-        for (var col = 0; col < 3; col++) {
-            for (var row = 0; row < 3; row++) {
+        for (var col = 0; col < 3; col++)
+            for (var row = 0; row < 3; row++)
                 if (gameField[col][row] == 1 || gameField[col][row] == 2) {
                     counter++;
                     if (isDraw(counter)) {
@@ -79,8 +76,6 @@ public final class Model implements Observable {
                         return;
                     }
                 }
-            }
-        }
         changePlayer();
         notifyObserver();
     }
@@ -105,7 +100,6 @@ public final class Model implements Observable {
         for (var column = 0; column < 3; column++)
             for (var row = 0; row < 3; row++)
                 gameField[row][column] = 0;
-
         notifyObserver();
     }
 

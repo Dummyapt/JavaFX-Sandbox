@@ -26,46 +26,46 @@ public final class ProductTable extends Application {
 
     @Override
     public void start(Stage stage) throws SQLException {
-        var width = 75;
-        var id = new TableColumn<Product, Integer>("ID");
+        final var width = 75;
+        final var id = new TableColumn<Product, Integer>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        var name = new TableColumn<Product, String>("Name");
+        final var name = new TableColumn<Product, String>("Name");
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        var price = new TableColumn<Product, Double>("Price");
+        final var price = new TableColumn<Product, Double>("Price");
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        var tableView = new TableView<Product>();
+        final var tableView = new TableView<Product>();
         tableView.getColumns().addAll(Arrays.asList(id, name, price));
         tableView.setPlaceholder(new Label("No data"));
 
-        var portInput = new TextField();
+        final var portInput = new TextField();
         portInput.setPromptText("Port");
         portInput.setMaxWidth(width);
 
-        var databaseInput = new TextField();
+        final var databaseInput = new TextField();
         databaseInput.setPromptText("Database");
         databaseInput.setMaxWidth(width);
 
-        var usernameInput = new TextField();
+        final var usernameInput = new TextField();
         usernameInput.setPromptText("Username");
         usernameInput.setMaxWidth(width);
 
-        var passwordInput = new PasswordField();
+        final var passwordInput = new PasswordField();
         passwordInput.setPromptText("Password");
         passwordInput.setMaxWidth(width);
 
-        var nameInput = new TextField();
+        final var nameInput = new TextField();
         nameInput.setPromptText("Name");
 
-        var priceInput = new TextField();
+        final var priceInput = new TextField();
         priceInput.setPromptText("Price");
 
-        var statusLabel = new Label("Status:");
+        final var statusLabel = new Label("Status:");
         statusLabel.setMinWidth(width);
 
         statusText.setMinWidth(width);
 
-        var connectButton = new Button("Connect");
+        final var connectButton = new Button("Connect");
         connectButton.setMinWidth(width * 2.0);
         connectButton.setOnAction(ae -> {
             try {
@@ -83,37 +83,37 @@ public final class ProductTable extends Application {
             tableView.setItems(getProducts());
         });
 
-        var refreshButton = new Button("_Refresh");
+        final var refreshButton = new Button("_Refresh");
         refreshButton.setMinWidth(width * 2.0);
         refreshButton.setOnAction(ae -> {
-            if (connection == null)
-                statusText.setText("Error");
+            if (connection == null) statusText.setText("Error");
             tableView.setItems(getProducts());
             tableView.refresh();
         });
 
-        var insertButton = new Button("_Insert");
+        final var insertButton = new Button("_Insert");
         insertButton.setMinWidth(width * 2.0);
         insertButton.setOnAction(actionEvent -> createProduct(name.getText(), Double.parseDouble(priceInput.getText())));
 
-        var hBoxServer = new HBox(portInput, databaseInput);
-        var hBoxUser = new HBox(usernameInput, passwordInput);
-        var hBoxStatus = new HBox(statusLabel, statusText);
-        var vBox = new VBox(hBoxStatus,
+        final var hBoxServer = new HBox(portInput, databaseInput);
+        final var hBoxUser = new HBox(usernameInput, passwordInput);
+        final var hBoxStatus = new HBox(statusLabel, statusText);
+        final var vBox = new VBox(hBoxStatus,
                 hBoxServer,
                 hBoxUser,
                 connectButton,
                 refreshButton,
                 nameInput,
                 priceInput,
-                insertButton);
+                insertButton
+        );
 
-        var borderPane = new BorderPane();
+        final var borderPane = new BorderPane();
         borderPane.setLeft(vBox);
         borderPane.setCenter(tableView);
 
-        var scene = new Scene(borderPane);
-        var icon = new Image("https://static.thenounproject.com/png/161182-200.png");
+        final var scene = new Scene(borderPane);
+        final var icon = new Image("https://static.thenounproject.com/png/161182-200.png");
         stage.setTitle("EmscherTrade");
         stage.getIcons().add(icon);
         stage.setResizable(false);
@@ -122,10 +122,10 @@ public final class ProductTable extends Application {
     }
 
     private ObservableList<Product> getProducts() {
-        ObservableList<Product> products = FXCollections.observableArrayList();
+        final ObservableList<Product> products = FXCollections.observableArrayList();
         try {
-            var statement = connection.createStatement();
-            var resultSet = statement.executeQuery("SELECT * FROM emschertrade.products");
+            final var statement = connection.createStatement();
+            final var resultSet = statement.executeQuery("SELECT * FROM emschertrade.products");
             while (resultSet.next())
                 products.add(
                         new Product(

@@ -5,6 +5,7 @@ import de.dummyapt.javafx_sandbox.connectfour.observer.Observer;
 
 import java.util.LinkedList;
 
+// TODO: 18.02.2022 Code
 public final class Model implements Observable {
     private final int[][] gameField;
     private final LinkedList<Observer> observerList;
@@ -15,6 +16,7 @@ public final class Model implements Observable {
         gameField = new int[6][7];
         activePlayer = 1;
         observerList = new LinkedList<>();
+        reset();
     }
 
     @Override
@@ -71,12 +73,10 @@ public final class Model implements Observable {
                 activePlayer = 0;
                 return;
             }
-        } else
-            return;
+        } else return;
 
         for (var column = 0; column < 7; column++)
-            if (gameField[0][column] == 0)
-                break;
+            if (gameField[0][column] == 0) break;
             else if (column == 6) {
                 statusText = "Unentschieden.";
                 notifyObserver();
@@ -106,11 +106,8 @@ public final class Model implements Observable {
         for (var i = 0; i < 7; i++)
             if (gameField[pRow][i] == activePlayer) {
                 inRowHor++;
-                if (inRowHor == 4) {
-                    return true;
-                }
-            } else
-                inRowHor = 0;
+                if (inRowHor == 4) return true;
+            } else inRowHor = 0;
 
         // right to left diag -> DEBUG, PLEASE! Solution like vertical
         var rightToLeftDiag = 0;
@@ -133,18 +130,15 @@ public final class Model implements Observable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
     public void reset() {
         statusText = "Spieler 1 ist dran!";
         activePlayer = 1;
-
         for (var column = 0; column < 7; column++)
             for (var row = 0; row < 6; row++)
                 gameField[row][column] = 0;
-
         notifyObserver();
     }
 }

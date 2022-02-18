@@ -17,8 +17,7 @@ public final class Database {
     }
 
     static Connection getConnection() throws SQLException {
-        if (connection == null)
-            connection = DriverManager.getConnection(URL + ':' + PORT + '/' + DB, USER, PASS);
+        if (connection == null) connection = DriverManager.getConnection(URL + ':' + PORT + '/' + DB, USER, PASS);
         return connection;
     }
 }

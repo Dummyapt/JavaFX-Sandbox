@@ -17,22 +17,14 @@ public final class Controller extends Application {
         model = new Model();
         view = new View(this, model);
         model.registerObserver(view);
-        model.registerObserver(() -> System.out.println(model.getStatusText()));
     }
 
     @Override
     public void start(Stage stage) {
-        var scene = new Scene(view.getView());
+        final var scene = new Scene(view.getView());
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-    }
-
-    @Override
-    public void stop() throws Exception {
-        model.removeObserver(view);
-        super.stop();
-        System.exit(-1);
     }
 
     public void reveal(int column, int row) {

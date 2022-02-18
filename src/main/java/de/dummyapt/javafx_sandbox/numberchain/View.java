@@ -34,29 +34,23 @@ public final class View implements Observer {
     public View(Controller controller, Model model) {
         this.model = model;
 
-        var btnExit = new Button("_Exit");
+        final var btnExit = new Button("_Exit");
         btnExit.setStyle(STYLE_DEFAULT_CARD);
-        btnExit.setOnAction(ae -> {
-            try {
-                controller.stop();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        btnExit.setOnAction(ae -> System.exit(-1));
 
-        var btnReset = new Button("_Reset");
+        final var btnReset = new Button("_Reset");
         btnReset.setStyle(STYLE_DEFAULT_CARD);
         btnReset.setOnAction(ae -> controller.reset());
 
-        var hBox = new HBox();
-        hBox.setSpacing(5);
-        hBox.setAlignment(Pos.CENTER);
+        final var hBox = new HBox();
         hBox.getChildren().addAll(btnReset, btnExit);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(5);
 
-        var gridPane = new GridPane();
+        final var gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(5);
         gridPane.setVgap(5);
-        gridPane.setAlignment(Pos.CENTER);
 
         for (var column = 0; column < Model.FIELD_SIZE; column++) {
             for (var row = 0; row < Model.FIELD_SIZE; row++) {
@@ -70,26 +64,23 @@ public final class View implements Observer {
             }
         }
 
-        BorderPane.setAlignment(statusLabel, Pos.CENTER);
-        BorderPane.setAlignment(gridPane, Pos.CENTER);
-        BorderPane.setAlignment(hBox, Pos.CENTER);
-
-        BorderPane.setMargin(statusLabel, new Insets(5, 5, 5, 5));
-        BorderPane.setMargin(gridPane, new Insets(5, 5, 5, 5));
-        BorderPane.setMargin(hBox, new Insets(5, 5, 5, 5));
-
         borderPane.setPadding(new Insets(5, 5, 5, 5));
-
         borderPane.setTop(statusLabel);
         borderPane.setCenter(gridPane);
         borderPane.setBottom(hBox);
+        BorderPane.setAlignment(statusLabel, Pos.CENTER);
+        BorderPane.setAlignment(gridPane, Pos.CENTER);
+        BorderPane.setAlignment(hBox, Pos.CENTER);
+        BorderPane.setMargin(statusLabel, new Insets(5, 5, 5, 5));
+        BorderPane.setMargin(gridPane, new Insets(5, 5, 5, 5));
+        BorderPane.setMargin(hBox, new Insets(5, 5, 5, 5));
     }
 
     @Override
     public void update() {
-        var gameBoard = model.getGameField();
-        for (var column = 0; column < Model.FIELD_SIZE; column++) {
-            for (var row = 0; row < Model.FIELD_SIZE; row++) {
+        final var gameBoard = model.getGameField();
+        for (var column = 0; column < Model.FIELD_SIZE; column++)
+            for (var row = 0; row < Model.FIELD_SIZE; row++)
                 switch (gameBoard[column][row].getBelongsToPlayer()) {
                     case 1, 2 -> {
                         gameField[row][column].setStyle(STYLE_RIGHT_CARD);
@@ -104,9 +95,6 @@ public final class View implements Observer {
                         gameField[row][column].setText(null);
                     }
                 }
-            }
-        }
-
         statusLabel.setText(model.getStatusText());
     }
 

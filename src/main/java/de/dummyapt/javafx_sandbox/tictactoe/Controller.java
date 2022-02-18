@@ -16,15 +16,16 @@ public final class Controller extends Application {
     public void init() {
         model = new Model();
         view = new View(this, model);
+        model.registerObserver(view);
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        var primaryScene = new Scene(view.getView());
-        primaryStage.setScene(primaryScene);
-        primaryStage.setTitle("TicTacToe | Dummyapt");
-        primaryStage.setResizable(false);
-        primaryStage.show();
+    public void start(Stage stage) {
+        var scene = new Scene(view.getView());
+        stage.setScene(scene);
+        stage.setTitle("TicTacToe | Dummyapt");
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void setCharacter(int pCol, int pRow) {

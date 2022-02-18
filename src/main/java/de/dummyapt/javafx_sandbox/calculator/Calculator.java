@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+// TODO: 18.02.2022 Code
 public final class Calculator extends Application {
     private final GridPane gridPane = new GridPane();
     private final Button[][] btnNumbers = new Button[3][6];
@@ -23,12 +24,12 @@ public final class Calculator extends Application {
     public void start(Stage stage) {
         txtResult.setEditable(false);
 
-        double spacing = 5;
+        final double spacing = 5;
         gridPane.setHgap(spacing);
         gridPane.setVgap(spacing);
 
         int i = 1;
-        for (int row = 2; row < 5; row++) {
+        for (int row = 2; row < 5; row++)
             for (int column = 0; column < 3; column++) {
                 btnNumbers[column][row] = new Button("" + i);
                 gridPane.add(btnNumbers[column][row], column, row);
@@ -36,7 +37,6 @@ public final class Calculator extends Application {
                 btnNumbers[column][row].setOnAction(ae -> txtResult.setText(txtResult.getText() + tmpI));
                 i++;
             }
-        }
 
         btnClear.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         btnClear.setOnAction(ae -> txtResult.setText(""));

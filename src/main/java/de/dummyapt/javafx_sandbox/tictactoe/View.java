@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-public final class View extends BorderPane implements Observer {
+public final class View implements Observer {
     private static final String DEFAULT = """
             -fx-background-radius: 5em; -fx-color: white;
             -fx-min-width: 50px; -fx-max-width: 50px;
@@ -28,59 +28,52 @@ public final class View extends BorderPane implements Observer {
             -fx-min-height: 50px; -fx-max-height: 50px;
             -fx-font-size: 20px; -fx-font-weight: bold;""";
     private final Button[][] gameField = new Button[3][3];
+    private final BorderPane borderPane = new BorderPane();
     private final Label lblStatus = new Label("TicTacToe by Dummyapt");
     private final Observable model;
 
-    public View(Controller pController, Model pModel) {
-        model = pModel;
+    public View(Controller controller, Model model) {
+        this.model = model;
 
-        pModel.registerObserver(this);
-
-        var btnReset = new Button("_Reset");
-        btnReset.setOnAction(ae -> pController.reset());
+        final var btnReset = new Button("_Reset");
+        btnReset.setOnAction(ae -> controller.reset());
         btnReset.setStyle(DEFAULT);
 
-        var gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10));
+        final var textField = new TextField("Press Alt + R to reset the game.");
+        textField.setEditable(false);
+        textField.setAlignment(Pos.CENTER);
 
-        for (var column = 0; column < 3; column++) {
+        final var gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
+
+        for (var column = 0; column < 3; column++)
             for (var row = 0; row < 3; row++) {
                 gameField[column][row] = new Button();
                 gameField[column][row].setStyle(DEFAULT);
                 int finalRow = row;
                 int finalColumn = column;
-                gameField[column][row].setOnAction(ae -> pController.setCharacter(finalColumn, finalRow));
+                gameField[column][row].setOnAction(ae -> controller.setCharacter(finalColumn, finalRow));
                 gridPane.add(gameField[column][row], column, row);
-                setMargin(gameField[column][row], new Insets(5, 10, 5, 10));
+                BorderPane.setMargin(gameField[column][row], new Insets(5, 10, 5, 10));
             }
-        }
 
-        var textField = new TextField("Press Alt + R to reset the game.");
-        textField.setEditable(false);
-        textField.setAlignment(Pos.CENTER);
-
-        gridPane.setHgap(5);
-        gridPane.setVgap(5);
-
-        setLeft(btnReset);
-        setTop(lblStatus);
-        setBottom(textField);
-        setCenter(gridPane);
-
-        setPadding(new Insets(10, 10, 10, 10));
-        setMaxSize(400, 400);
-
-        setAlignment(btnReset, Pos.CENTER);
-        setAlignment(lblStatus, Pos.CENTER);
-
-        setMargin(btnReset, new Insets(0, 15, 0, 10));
-        setMargin(lblStatus, new Insets(0, 10, 10, 10));
+        borderPane.setLeft(btnReset);
+        borderPane.setTop(lblStatus);
+        borderPane.setBottom(textField);
+        borderPane.setCenter(gridPane);
+        borderPane.setPadding(new Insets(10, 10, 10, 10));
+        borderPane.setMaxSize(400, 400);
+        BorderPane.setAlignment(btnReset, Pos.CENTER);
+        BorderPane.setAlignment(lblStatus, Pos.CENTER);
+        BorderPane.setMargin(btnReset, new Insets(0, 15, 0, 10));
+        BorderPane.setMargin(lblStatus, new Insets(0, 10, 10, 10));
     }
 
     @Override
     public void update() {
-        int[][] gameBoard = model.getGameField();
-
+        final int[][] gameBoard = model.getGameField();
         for (var column = 0; column < 3; column++)
             for (var row = 0; row < 3; row++)
                 switch (gameBoard[column][row]) {
@@ -101,6 +94,6 @@ public final class View extends BorderPane implements Observer {
     }
 
     public Parent getView() {
-        return this;
+        return borderPane;
     }
 }

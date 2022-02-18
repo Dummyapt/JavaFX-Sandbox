@@ -17,24 +17,28 @@ public final class CovidView {
     private final VBox vBox = new VBox();
 
     public CovidView(View view) {
-        var id = new TableColumn<Entry, Integer>("ID");
+        final var id = new TableColumn<Entry, Integer>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        var lkId = new TableColumn<Entry, Integer>("lkID");
+
+        final var lkId = new TableColumn<Entry, Integer>("lkID");
         lkId.setCellValueFactory(new PropertyValueFactory<>("lkId"));
-        var lkName = new TableColumn<Entry, String>("LKName");
+
+        final var lkName = new TableColumn<Entry, String>("LKName");
         lkName.setCellValueFactory(new PropertyValueFactory<>("lkName"));
-        var value = new TableColumn<Entry, Double>("Value");
+
+        final var value = new TableColumn<Entry, Double>("Value");
         value.setCellValueFactory(new PropertyValueFactory<>("value"));
-        var date = new TableColumn<Entry, Date>("Date");
+
+        final var date = new TableColumn<Entry, Date>("Date");
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        var tableView = new TableView<Entry>();
+        final var tableView = new TableView<Entry>();
         tableView.getColumns().addAll(Arrays.asList(id, lkId, lkName, value, date));
         tableView.setRowFactory(tv -> {
-            TableRow<Entry> row = new TableRow<>();
+            final TableRow<Entry> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty()))
-                    view.borderPane.setCenter(new EditAndInsertView(row.getItem()).getView());
+                    view.setBorderPaneCenter(new EditAndInsertView(row.getItem()).getView());
             });
             return row;
         });
@@ -42,28 +46,29 @@ public final class CovidView {
         refreshList();
         tableView.setItems(entries);
 
-        var search = new TextField();
-        search.setPromptText("Suchbegriff eingeben");
-
-        var submit = new Button("Search");
-        submit.setOnAction(ae -> {
+        final var search = new TextField();
+        search.setPromptText("Enter keyword");
+        search.setOnAction(ae -> {
             entries.clear();
             filter(search.getText());
             search.clear();
             tableView.setItems(entries);
         });
-        search.setOnAction(ae -> submit.fire());
+
+        final var submit = new Button("Search");
+        submit.setOnAction(search::fireEvent);
+
         vBox.getChildren().addAll(tableView, new HBox(search, submit));
     }
 
     private void filter(String search) {
         try {
-            var filter = "'%" + search + "%'";
-            var sql = "SELECT * FROM corona.inzidenzen WHERE id LIKE " + filter +
+            final var filter = "'%" + search + "%'";
+            final var sql = "SELECT * FROM corona.inzidenzen WHERE id LIKE " + filter +
                     " OR lkid LIKE " + filter +
                     " OR lkname LIKE " + filter +
                     " OR inzidenz LIKE " + filter;
-            var resultSet = Database.getConnection().createStatement().executeQuery(sql);
+            final var resultSet = Database.getConnection().createStatement().executeQuery(sql);
             while (resultSet.next())
                 entries.add(
                         new Entry(
@@ -81,7 +86,8 @@ public final class CovidView {
     private void refreshList() {
         entries.clear();
         try {
-            var resultSet = Database.getConnection().createStatement().executeQuery("SELECT * FROM corona.inzidenzen");
+            final var sql = "SELECT * FROM corona.inzidenzen";
+            final var resultSet = Database.getConnection().createStatement().executeQuery(sql);
             while (resultSet.next())
                 entries.add(
                         new Entry(

@@ -18,7 +18,6 @@ public final class EditAndInsertView {
     private final Alert alert = new Alert(Alert.AlertType.NONE);
     private final Button runButton = new Button();
 
-
     public EditAndInsertView() {
         clearInputs();
 
@@ -40,11 +39,11 @@ public final class EditAndInsertView {
                 alert.setHeaderText("Please confirm your action");
                 alert.setContentText("Do you want to add the entry now?");
 
-                var result = alert.showAndWait();
+                final var result = alert.showAndWait();
                 if (result.isPresent()) {
                     if (result.get() == ButtonType.APPLY) {
-                        var sql = "INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);";
-                        var preparedStatement = Database.getConnection().prepareStatement(sql);
+                        final var sql = "INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);";
+                        final var preparedStatement = Database.getConnection().prepareStatement(sql);
                         preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
                         preparedStatement.setString(2, lkNameInput.getText());
                         preparedStatement.setDouble(3, Double.parseDouble(valueInput.getText()));
@@ -105,11 +104,11 @@ public final class EditAndInsertView {
                 alert.setHeaderText("Please confirm your action");
                 alert.setContentText("Do you want to change the data row now?");
 
-                var result = alert.showAndWait();
+                final var result = alert.showAndWait();
                 if (result.isPresent()) {
                     if (result.get() == ButtonType.OK) {
-                        var sql = "UPDATE inzidenzen SET lkid = ?, lkname = ?, inzidenz = ?, datum = ? WHERE id = ?;";
-                        var preparedStatement = Database.getConnection().prepareStatement(sql);
+                        final var sql = "UPDATE inzidenzen SET lkid = ?, lkname = ?, inzidenz = ?, datum = ? WHERE id = ?;";
+                        final var preparedStatement = Database.getConnection().prepareStatement(sql);
                         preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
                         preparedStatement.setString(2, lkNameInput.getText());
                         preparedStatement.setDouble(3, Double.parseDouble(valueInput.getText()));

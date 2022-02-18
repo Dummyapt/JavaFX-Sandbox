@@ -1,16 +1,24 @@
 package de.dummyapt.javafx_sandbox.motivationalquotes;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public final class MotivationalQuotes extends Application {
+// TODO: 18.02.2022 Code
+public final class MotivationAPT extends Application {
+    private final BorderPane borderPane = new BorderPane();
+
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-
+    public void start(Stage stage) {
+        final var scene = new Scene(borderPane);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 }
 

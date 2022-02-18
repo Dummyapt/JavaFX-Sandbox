@@ -11,6 +11,7 @@ public final class Model implements Observable {
     private final LinkedList<Observer> observerList;
     private final int[] countOfCards;
     private final Card[][] gameField;
+    private final Random random = new Random();
     private int currentPlayer;
     private int nextNumber;
     private String statusText;
@@ -54,31 +55,25 @@ public final class Model implements Observable {
     }
 
     public void setCard(int column, int row) {
-        if (currentPlayer == 0) {
-            return;
-        } else {
-            if (gameField[row][column].isRevealed()) {
-                if (gameField[row][column].getBelongsToPlayer() == 3) {
-                    closeCard(row, column);
-                    changePlayer();
-                    notifyObserver();
-                    return;
-                }
-                statusText = "Already revealed!";
+        if (currentPlayer == 0) return;
+        else if (gameField[row][column].isRevealed()) {
+            if (gameField[row][column].getBelongsToPlayer() == 3) {
+                closeCard(row, column);
+                changePlayer();
                 notifyObserver();
                 return;
-            } else {
-                if (gameField[row][column].getNumber() == nextNumber) {
-                    revealCard(row, column);
-                    countMove();
-                } else {
-                    wrongCard(row, column);
-                    notifyObserver();
-                    return;
-                }
             }
+            statusText = "Already revealed!";
+            notifyObserver();
+            return;
+        } else if (gameField[row][column].getNumber() == nextNumber) {
+            revealCard(row, column);
+            countMove();
+        } else {
+            wrongCard(row, column);
+            notifyObserver();
+            return;
         }
-
         notifyObserver();
     }
 
@@ -115,8 +110,8 @@ public final class Model implements Observable {
         nextNumber++;
 
         var counter = 0;
-        for (var column = 0; column < FIELD_SIZE; column++) {
-            for (var row = 0; row < FIELD_SIZE; row++) {
+        for (var column = 0; column < FIELD_SIZE; column++)
+            for (var row = 0; row < FIELD_SIZE; row++)
                 if (gameField[column][row].isRevealed()) {
                     counter++;
                     if (counter == FIELD_SIZE * FIELD_SIZE) {
@@ -124,16 +119,11 @@ public final class Model implements Observable {
                         return;
                     }
                 }
-            }
-        }
     }
 
     private void gameOver() {
-        if (countOfCards[0] > countOfCards[1]) {
-            statusText = "Game over! Player 1 wins.";
-        } else {
-            statusText = "Game over! Player 2 wins.";
-        }
+        if (countOfCards[0] > countOfCards[1]) statusText = "Game over! Player 1 wins.";
+        else statusText = "Game over! Player 2 wins.";
         currentPlayer = 0;
         notifyObserver();
     }
@@ -143,28 +133,23 @@ public final class Model implements Observable {
         countOfCards[1] = 0;
         currentPlayer = 1;
         nextNumber = 1;
-
         statusText = String.format("NumberChain%nPlayer %s begins!", currentPlayer);
 
         var counter = 1;
-        for (var column = 0; column < FIELD_SIZE; column++) {
+        for (var column = 0; column < FIELD_SIZE; column++)
             for (var row = 0; row < FIELD_SIZE; row++) {
                 gameField[column][row] = new Card(counter);
                 counter++;
             }
-        }
 
-        for (var column = 0; column < FIELD_SIZE; column++) {
+        for (var column = 0; column < FIELD_SIZE; column++)
             for (var row = 0; row < FIELD_SIZE; row++) {
-                var preColumn = new Random().nextInt(FIELD_SIZE);
-                var preRow = new Random().nextInt(FIELD_SIZE);
-                var memory = gameField[preColumn][preRow];
-
+                final var preColumn = random.nextInt(FIELD_SIZE);
+                final var preRow = random.nextInt(FIELD_SIZE);
+                final var memory = gameField[preColumn][preRow];
                 gameField[preColumn][preRow] = gameField[column][row];
                 gameField[column][row] = memory;
             }
-        }
-
         notifyObserver();
     }
 }
