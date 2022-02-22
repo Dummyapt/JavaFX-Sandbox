@@ -84,11 +84,14 @@ public final class EditAndInsertView {
         clearInputs();
 
         idInput.setEditable(false);
+        idInput.setMouseTransparent(true);
+        idInput.setFocusTraversable(false);
         idInput.setText(String.valueOf(entry.id()));
         lkIdInput.setText(String.valueOf(entry.lkId()));
         lkNameInput.setText(String.valueOf(entry.lkName()));
         valueInput.setText(String.valueOf(entry.value()));
         datePicker.valueProperty().setValue(entry.getDate().toLocalDate());
+        datePicker.setEditable(false);
 
         runButton.setText("Update");
         runButton.setOnAction(ae -> {
