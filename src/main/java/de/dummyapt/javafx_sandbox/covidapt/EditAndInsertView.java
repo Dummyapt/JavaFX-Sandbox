@@ -8,6 +8,9 @@ import java.sql.Date;
 import java.sql.SQLException;
 
 public final class EditAndInsertView {
+    private static final String ERROR_STYLE = """
+            -fx-border-radius: 5px;
+            -fx-border-color: red;""";
     private final Label statusLabel = new Label();
     private final GridPane gridPane = new GridPane();
     private final TextField idInput = new TextField();
@@ -23,25 +26,27 @@ public final class EditAndInsertView {
 
         runButton.setText("Submit");
         runButton.setOnAction(ae -> {
-            if (statusLabel.getText().equals("New entry added!") || statusLabel.getText().equals("Canceled!"))
-                statusLabel.setText("");
+            alert.setAlertType(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Please confirm your action");
+            alert.setContentText("Do you want to add the entry now?");
+            final var result = alert.showAndWait();
+            if (result.isPresent()) {
+                if (result.get() == ButtonType.OK) {
+                    lkIdInput.setStyle("");
+                    if (!lkIdInput.getText().matches("^\\d+$"))
+                        lkIdInput.setStyle(ERROR_STYLE);
+                    lkNameInput.setStyle("");
+                    if (!lkNameInput.getText().matches("^[a-zA-Z]+ [a-zA-Z]+$"))
+                        lkNameInput.setStyle(ERROR_STYLE);
+                    valueInput.setStyle("");
+                    if (!valueInput.getText().matches("^\\d+.\\d+$"))
+                        valueInput.setStyle(ERROR_STYLE);
+                    datePicker.setStyle("");
+                    if (!datePicker.getEditor().getText().matches("^\\d{1,2}.\\d{1,2}.\\d{4}$"))
+                        datePicker.setStyle(ERROR_STYLE);
 
-            if (lkIdInput.getText().equals("") ||
-                    lkNameInput.getText().equals("") ||
-                    valueInput.getText().equals("")) {
-                statusLabel.setText("Invalid input!");
-                return;
-            }
-
-            try {
-                alert.setAlertType(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText("Please confirm your action");
-                alert.setContentText("Do you want to add the entry now?");
-
-                final var result = alert.showAndWait();
-                if (result.isPresent()) {
-                    if (result.get() == ButtonType.APPLY) {
+                    try {
                         final var sql = "INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);";
                         final var preparedStatement = Database.getConnection().prepareStatement(sql);
                         preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
@@ -49,15 +54,14 @@ public final class EditAndInsertView {
                         preparedStatement.setDouble(3, Double.parseDouble(valueInput.getText()));
                         preparedStatement.setDate(4, Date.valueOf(datePicker.getValue()));
                         preparedStatement.executeUpdate();
-                        clearInputs();
-                        statusLabel.setText("New entry added!");
-                    } else {
-                        clearInputs();
-                        statusLabel.setText("Canceled!");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
+                    clearInputs();
+                    statusLabel.setText("New entry added!");
+                } else {
+                    statusLabel.setText("Insertion canceled!");
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         });
 
@@ -88,25 +92,26 @@ public final class EditAndInsertView {
 
         runButton.setText("Update");
         runButton.setOnAction(ae -> {
-            if (statusLabel.getText().equals("Entry updated") || statusLabel.getText().equals("Canceled!"))
-                statusLabel.setText("");
-
-            if (lkIdInput.getText().equals("") ||
-                    lkNameInput.getText().equals("") ||
-                    valueInput.getText().equals("")) {
-                statusLabel.setText("Invalid input!");
-                return;
-            }
-
-            try {
-                alert.setAlertType(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText("Please confirm your action");
-                alert.setContentText("Do you want to change the data row now?");
-
-                final var result = alert.showAndWait();
-                if (result.isPresent()) {
-                    if (result.get() == ButtonType.OK) {
+            alert.setAlertType(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Please confirm your action");
+            alert.setContentText("Do you want to change the data row now?");
+            final var result = alert.showAndWait();
+            if (result.isPresent()) {
+                if (result.get() == ButtonType.OK) {
+                    lkIdInput.setStyle("");
+                    if (!lkIdInput.getText().matches("^\\d+$"))
+                        lkIdInput.setStyle(ERROR_STYLE);
+                    lkNameInput.setStyle("");
+                    if (!lkNameInput.getText().matches("^[a-zA-Z]+ [a-zA-Z]+$"))
+                        lkNameInput.setStyle(ERROR_STYLE);
+                    valueInput.setStyle("");
+                    if (!valueInput.getText().matches("^\\d+.\\d+$"))
+                        valueInput.setStyle(ERROR_STYLE);
+                    datePicker.setStyle("");
+                    if (!datePicker.getEditor().getText().matches("^\\d{1,2}.\\d{1,2}.\\d{4}$"))
+                        datePicker.setStyle(ERROR_STYLE);
+                    try {
                         final var sql = "UPDATE inzidenzen SET lkid = ?, lkname = ?, inzidenz = ?, datum = ? WHERE id = ?;";
                         final var preparedStatement = Database.getConnection().prepareStatement(sql);
                         preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
@@ -115,16 +120,13 @@ public final class EditAndInsertView {
                         preparedStatement.setDate(4, Date.valueOf(datePicker.getValue()));
                         preparedStatement.setInt(5, Integer.parseInt(idInput.getText()));
                         preparedStatement.executeUpdate();
-                        preparedStatement.close();
-                        clearInputs();
-                        statusLabel.setText("Entry updated!");
-                    } else {
-                        clearInputs();
-                        statusLabel.setText("Canceled!");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
+                    statusLabel.setText("Entry updated!");
+                } else {
+                    statusLabel.setText("Update canceled!");
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         });
 
