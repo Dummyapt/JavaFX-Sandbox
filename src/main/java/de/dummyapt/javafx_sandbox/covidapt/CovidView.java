@@ -86,7 +86,9 @@ public final class CovidView {
     private void refreshList() {
         entries.clear();
         try {
-            final var sql = "SELECT * FROM corona.inzidenzen";
+            final var sql = """
+                    SELECT *
+                    FROM corona.inzidenzen""";
             final var resultSet = Database.getConnection().createStatement().executeQuery(sql);
             while (resultSet.next())
                 entries.add(

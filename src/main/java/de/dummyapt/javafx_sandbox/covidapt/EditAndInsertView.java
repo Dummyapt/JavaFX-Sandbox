@@ -47,7 +47,9 @@ public final class EditAndInsertView {
                         datePicker.setStyle(ERROR_STYLE);
 
                     try {
-                        final var sql = "INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum) VALUES (?, ?, ?, ?);";
+                        final var sql = """
+                                INSERT INTO inzidenzen (lkid, lkname, inzidenz, datum)
+                                VALUES (?, ?, ?, ?);""";
                         final var preparedStatement = Database.getConnection().prepareStatement(sql);
                         preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
                         preparedStatement.setString(2, lkNameInput.getText());
@@ -112,7 +114,10 @@ public final class EditAndInsertView {
                     if (!datePicker.getEditor().getText().matches("^\\d{1,2}.\\d{1,2}.\\d{4}$"))
                         datePicker.setStyle(ERROR_STYLE);
                     try {
-                        final var sql = "UPDATE inzidenzen SET lkid = ?, lkname = ?, inzidenz = ?, datum = ? WHERE id = ?;";
+                        final var sql = """
+                                UPDATE inzidenzen
+                                SET lkid = ?, lkname = ?, inzidenz = ?, datum = ?
+                                WHERE id = ?;""";
                         final var preparedStatement = Database.getConnection().prepareStatement(sql);
                         preparedStatement.setInt(1, Integer.parseInt(lkIdInput.getText()));
                         preparedStatement.setString(2, lkNameInput.getText());
